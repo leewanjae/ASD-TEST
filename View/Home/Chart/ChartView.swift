@@ -12,11 +12,16 @@ struct ChartView: View {
     
     var body: some View {
         VStack {
+            Text("Test Results Summary Chart")
+                .font(.largeTitle)
+                .bold()
             // MARK: - 세그먼티드 컨트롤
             Picker("Options", selection: $selectedTab) {
                 Text("Social")
+                    .padding()
                     .tag(0)
                 Text("Behavior")
+                    .padding()
                     .tag(1)
             }
             .pickerStyle(.segmented)

@@ -9,4 +9,5 @@ import SwiftUI
 
 extension Color {
     static let main = Color("main")
+    static let chartBg = Color("chartBg")
 }

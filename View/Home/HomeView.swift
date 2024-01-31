@@ -12,31 +12,32 @@ struct HomeView: View {
     @State private var hasShownModal = false
     
     let columns: [GridItem] = [
-        GridItem(.fixed(200),spacing: 50),
-        GridItem(.fixed(200)),
+        GridItem(.fixed(300),spacing: 30),
+        GridItem(.fixed(300)),
     ]
     
     var body: some View {
         VStack {
             
-            
             Image("logo")
                 .resizable()
                 .frame(width: 200, height: 200)
-                .padding(.bottom, 50)
-            
+               
             ChartView()
+                .padding()
+                .border(.secondary, width: 2)
+                .background(Color.chartBg)
+                .padding()
             
             Spacer()
             // MARK: - 그리드
             HStack {
-                Spacer()
                 NavigationStack {
                     LazyVGrid(columns: columns, spacing: 50) {
                         ForEach(SceneType.allCases, id: \.self) { scene in
                             NavigationLink(destination: SceneViewBuilder.destinationView(scene: scene)) {
                                 Text(scene.rawValue)
-                                    .frame(width: 200, height: 100)
+                                    .frame(width: 300, height: 100)
                                     .background(Color.main)
                                     .foregroundColor(.white)
                                     .font(.system(size: 20, weight: .bold))
@@ -45,8 +46,6 @@ struct HomeView: View {
                         }
                     }
                 }
-                Spacer()
-                
             }
             Spacer()
         }

@@ -6,14 +6,19 @@
 //
 
 import SwiftUI
+import Charts
 
 struct SocialChartView: View {
     var body: some View {
-        GeometryReader { geometry in
-            Text("Hello, SocialChart!")
-                .frame(width: geometry.size.width, height: 500)
-                .background(Color.main)
+        Chart {
+            ForEach(postings) { posting in
+                BarMark(x: .value("Posting", posting.count), y: .value("Name", posting.name))
+            }
         }
+        .padding()
+        .foregroundColor(.main)
+        .background(.regularMaterial)
+        .border(.secondary, width: 2)
     }
 }
 
