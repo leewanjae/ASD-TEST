@@ -1,5 +1,5 @@
 //
-//  SocialChart.swift
+//  SocialChartView.swift
 //
 //
 //  Created by 이완재 on 1/30/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SocialChart: View {
+struct SocialChartView: View {
     var body: some View {
         GeometryReader { geometry in
             Text("Hello, SocialChart!")
@@ -18,5 +18,5 @@ struct SocialChart: View {
 }
 
 #Preview {
-    SocialChart()
+    SocialChartView()
 }
