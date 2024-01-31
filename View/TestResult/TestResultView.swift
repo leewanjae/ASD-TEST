@@ -1,5 +1,5 @@
 //
-//  TestStartView.swift
+//  TestResultView.swift
 //
 //
 //  Created by 이완재 on 1/30/24.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct TestStartView: View {
+struct TestResultView: View {
     var body: some View {
-        Text("Hello, TestStartView!")
+        Text("Hello, TestResult!")
     }
 }
 
 #Preview {
-    TestStartView()
+    TestResultView()
 }

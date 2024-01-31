@@ -12,12 +12,12 @@ struct SceneViewBuilder {
     @ViewBuilder
     static func destinationView(scene: SceneType) -> some View {
         switch scene {
-        case .TestStart:
-            TestStartView()
-        case .UnderstandingASD:
-            UnderstandingASDView()
-        case .TipsForParents:
-            TipsForParentsView()
+        case .StartTest:
+            StartTestView()
+        case .AutismSpectrumTraits:
+            AutismSpectrumTraitsView()
+        case .TestResult:
+            TestResultView()
         case .AppSettings:
             AppSettingsView()
         }
