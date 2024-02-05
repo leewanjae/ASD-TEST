@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Combine
 
 struct StartTestView: View {
-    @StateObject private var viewModel = StartTestViewModel()
+    @EnvironmentObject var userInfo: UserInfo
     
     var body: some View {
         NavigationStack {
@@ -22,7 +23,7 @@ struct StartTestView: View {
                 VStack(alignment: .leading) {
                     Text("Full Name ")
                         .font(.system(size: 25))
-                    TextField("Enter your full name, please", text: $viewModel.userInfo.name)
+                    TextField("Enter your full name, please", text: $userInfo.name)
                         .border(.black)
                         .frame(width: 400)
                         .textFieldStyle(.roundedBorder)
@@ -30,7 +31,7 @@ struct StartTestView: View {
                         .padding(.bottom, 30)
                     
                     HStack {
-                        DatePicker("", selection: $viewModel.userInfo.birthDate, in: ...Date(), displayedComponents: .date)
+                        DatePicker("", selection: $userInfo.birthDate, in: ...Date(), displayedComponents: .date)
                             .datePickerStyle(.graphical)
                             .frame(width: 300)
                             .multilineTextAlignment(.center)
@@ -38,7 +39,7 @@ struct StartTestView: View {
                             .padding(.bottom, 30)
                             .padding(.trailing, 30)
                         
-                        Text("Age: \(viewModel.userInfo.age)")
+                        Text("Age: \(userInfo.age)")
                             .font(.system(size: 25))
                     }
                 }
@@ -52,16 +53,13 @@ struct StartTestView: View {
                     
                     // MARK: - 버튼
                     
-                    NavigationLink(destination: TestContentsView(viewModel: viewModel)) {
-                        CustomButton(title: "Start")
+                    NavigationLink(destination: QuestionView()) {
+                        DefaultButton(title: "Start")
                     }
                 }
                 Spacer()
             }
             .background(Color.white)
-            .onAppear {
-                viewModel.setupSubscriptions()
-            }
         }
     }
 }

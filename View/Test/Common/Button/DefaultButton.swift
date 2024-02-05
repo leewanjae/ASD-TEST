@@ -1,5 +1,5 @@
 //
-//  CustomButton.swift
+//  DefaultButton.swift
 //
 //
 //  Created by 이완재 on 2/4/24.
@@ -7,8 +7,12 @@
 
 import SwiftUI
 
-struct CustomButton: View {
+struct DefaultButton: View {
     var title: String
+    
+    init(title: String = "Next") {
+        self.title = title
+    }
     
     var body: some View {
             Text(title)
@@ -22,5 +26,5 @@ struct CustomButton: View {
 }
 
 #Preview {
-    CustomButton(title: "")
+    DefaultButton(title: "")
 }
