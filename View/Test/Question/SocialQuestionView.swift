@@ -1,5 +1,5 @@
 //
-//  QuestionView.swift
+//  SocialQuestionView.swift
 //
 //
 //  Created by 이완재 on 2/2/24.
@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct QuestionView: View {
+struct SocialQuestionView: View {
     @EnvironmentObject var userInfo: UserInfo
-    @State private var progress = 0.1
+    @State var progress = 0.1
     @State private var showAlter = false
     @State private var navigateToNext = false
+    @StateObject private var viewModel = QuestionViewModel()
     
     var body: some View {
         NavigationStack {
@@ -22,22 +23,35 @@ struct QuestionView: View {
                     Text("Age(Year): \(userInfo.age)")
                 }
                 
-                ProgressView(value: progress, total: 1.0)
+                ProgressView(value: viewModel.progress, total: 1.0)
                     .progressViewStyle(.linear)
                     .frame(height: 20)
                     .padding()
                 
                 Spacer()
                 
-                Text("여기에 내용을 넣을 것 입니다.")
+                if let socialTestItem = viewModel.currentSocialTestItem {
+                    Text(socialTestItem.description)
+                    HStack {
+                        Button("Yes") {
+                            viewModel.userRespondedToSocialTest(response: .yes)
+                        }
+                        
+                        Button("No") {
+                            viewModel.userRespondedToSocialTest(response: .no)
+                        }
+                    }
+                }
                 
                 Spacer()
                 
-                NavigationLink(destination: Question2(), isActive: $navigateToNext) {
-                    ProgressButton {
-                            progress += 0.1
+                NavigationLink(destination: BehaviorQuestionView(viewModel: viewModel), isActive: $navigateToNext) {
+                    ProgressButton(title: "Next Categori", progressAction: {
+                        if viewModel.hasAnsweredAllSocialQuestions {
                             navigateToNext = true
-                    }
+                        }
+                    }, disabled: viewModel.hasAnsweredAllSocialQuestions)
+                   
                 }
             }
             .onChange(of: progress, perform: { newValue in
@@ -55,5 +69,5 @@ struct QuestionView: View {
 }
 
 #Preview{
-    QuestionView()
+    SocialQuestionView()
 }

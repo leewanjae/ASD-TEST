@@ -53,7 +53,7 @@ struct StartTestView: View {
                     
                     // MARK: - 버튼
                     
-                    NavigationLink(destination: QuestionView()) {
+                    NavigationLink(destination: SocialQuestionView()) {
                         DefaultButton(title: "Start")
                     }
                 }

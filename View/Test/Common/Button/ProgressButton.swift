@@ -8,21 +8,23 @@
 import SwiftUI
 
 struct ProgressButton: View {
-    
+    var title: String
     var progressAction: () -> Void
-    
+    var disabled: Bool
+
     var body: some View {
-        Button(action: progressAction, label: {
-            Text("Next")
-                .frame(minWidth: 0, maxWidth: .infinity)  // 버튼의 너비를 확장
+        Button(action: progressAction) {
+            Text(title)
+                .frame(minWidth: 0, maxWidth: .infinity)
                 .padding()
                 .foregroundColor(.white)
-                .background(Color.main)
-                .clipShape(.capsule)
-        })
+                .background(disabled ? Color.main : Color.gray)
+                .clipShape(Capsule())
+        }
+        .disabled(disabled)
     }
 }
 
 #Preview {
-    ProgressButton(progressAction: {})
+    ProgressButton(title: "Stub", progressAction: {}, disabled: true)
 }
