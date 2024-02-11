@@ -22,28 +22,40 @@ struct SocialQuestionView: View {
                         .padding(.trailing, 50)
                     Text("Age(Year): \(userInfo.age)")
                 }
+                .padding(.vertical, 30)
                 
                 ProgressView(value: viewModel.progress, total: 1.0)
                     .progressViewStyle(.linear)
                     .frame(height: 20)
-                    .padding()
+                    .padding(.bottom, 50)
+                
+                Text("A. Persistent Deficits in Social Communication and Interaction")
+                    .font(.system(size: 30))
+                    .bold()
+                    .padding(.bottom, 50)
                 
                 Spacer()
-                
+
                 if let socialTestItem = viewModel.currentSocialTestItem {
                     Text(socialTestItem.description)
+                        .font(.system(size: 30, weight: .light))
+                        .padding(.horizontal, 50)
+                    
+                    Spacer()
+                    
                     HStack {
-                        Button("Yes") {
+                        Spacer()
+                        AnswerButton(title: "Yes") {
                             viewModel.userRespondedToSocialTest(response: .yes)
                         }
                         
-                        Button("No") {
+                        AnswerButton(title: "No") {
                             viewModel.userRespondedToSocialTest(response: .no)
                         }
+                        Spacer()
                     }
+                    Spacer()
                 }
-                
-                Spacer()
                 
                 NavigationLink(destination: BehaviorQuestionView(viewModel: viewModel), isActive: $navigateToNext) {
                     ProgressButton(title: "Next Categori", progressAction: {
@@ -51,18 +63,7 @@ struct SocialQuestionView: View {
                             navigateToNext = true
                         }
                     }, disabled: viewModel.hasAnsweredAllSocialQuestions)
-                   
                 }
-            }
-            .onChange(of: progress, perform: { newValue in
-                if newValue >= 0.9 {
-                    showAlter = true
-                }
-            })
-            .alert("Success", isPresented: $showAlter) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text("Analyzing, please wait for a moment")
             }
         }
     }

@@ -10,7 +10,7 @@ import SwiftUI
 struct BehaviorQuestionView: View {
     @EnvironmentObject var userInfo: UserInfo
     @ObservedObject var viewModel: QuestionViewModel
-//    @State private var showAlter = false
+    //    @State private var showAlter = false
     @State private var navigateToNext = false
     
     var body: some View {
@@ -21,24 +21,38 @@ struct BehaviorQuestionView: View {
                         .padding(.trailing, 50)
                     Text("Age(Year): \(userInfo.age)")
                 }
+                .padding(.vertical, 30)
                 
                 ProgressView(value: viewModel.progress, total: 1.0)
                     .progressViewStyle(.linear)
                     .frame(height: 20)
-                    .padding()
+                    .padding(.bottom, 50)
+                
+                Text("B. Restricted, Repetitive Patterns of Behavior, Interests, or Activities")
+                    .font(.system(size: 30))
+                    .bold()
+                    .padding(.bottom, 50)
                 
                 Spacer()
-                
+
                 if let socialTestItem = viewModel.currentBehaviorTestItem {
                     Text(socialTestItem.description)
+                        .font(.system(size: 30, weight: .light))
+                        .padding(.horizontal, 50)
+
+                    Spacer()
+                    
                     HStack {
-                        Button("Yes") {
+                        Spacer()
+                        AnswerButton(title: "Yes") {
                             viewModel.userRespondedToBehaviorTest(response: .yes)
                         }
                         
-                        Button("No") {
+                        AnswerButton(title: "No") {
                             viewModel.userRespondedToBehaviorTest(response: .no)
                         }
+                        Spacer()
+
                     }
                 }
                 
@@ -46,21 +60,13 @@ struct BehaviorQuestionView: View {
                 
                 NavigationLink(destination: TestResultView(), isActive: $navigateToNext) {
                     ProgressButton(title: "Submit", progressAction: {
-                            navigateToNext = true
+                        navigateToNext = true
                     }, disabled: viewModel.hasAnsweredAllBehaviorQuestions)
                 }
             }
-            .onChange(of: viewModel.progress, perform: { newValue in
-                if newValue >= 1.0 {
-                }
-            })
-        }
-        .onAppear{
-            viewModel.updateProgress()
         }
     }
 }
-
 #Preview {
     BehaviorChartView()
 }

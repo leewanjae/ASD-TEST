@@ -16,10 +16,11 @@ struct ProgressButton: View {
         Button(action: progressAction) {
             Text(title)
                 .frame(minWidth: 0, maxWidth: .infinity)
+                .frame(height: 80)
                 .padding()
                 .foregroundColor(.white)
                 .background(disabled ? Color.main : Color.gray)
-                .clipShape(Capsule())
+                .font(.system(size: 25))
         }
         .disabled(disabled)
     }
