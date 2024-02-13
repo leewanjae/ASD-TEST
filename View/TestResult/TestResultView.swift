@@ -10,37 +10,47 @@ import SwiftUI
 struct TestResultView: View {
     @ObservedObject var viewModel: QuestionViewModel
     @StateObject private var testResultViewModel = TestResultViewModel()
-    
+    @State var navigateToNext = false
     var body: some View {
         VStack{
             ChartView()
             
+            Divider()
+            
+            Text("Summary")
+            Text(testResultViewModel.summaryResult())
+                .font(.system(size: 25))
+                .bold()
+            
+            Divider()
             Text("Social Test Results")
                 .font(.headline)
                 .padding(.top)
             
+            Text("The items you responded 'yes' to: \(testResultViewModel.socialTestResults.count)")
             ForEach(testResultViewModel.socialTestResults, id: \.self) { result in
                 Text("\(result.description)")
-                Text("Yes: \(result.yesCount), No: \(result.noCount)")
             }
             
             Divider()
             
-            Text("Behavior Test Results")
+            Text("Behavior Test Results ")
                 .font(.headline)
                 .padding(.top)
+            
+            Text("The items you responded 'yes' to: \(testResultViewModel.behaviorTestResults.count)")
             ForEach(testResultViewModel.behaviorTestResults, id: \.self) { result in
                 Text("\(result.description)")
-                Text("Yes: \(result.yesCount), No: \(result.noCount)")
             }
             
-            Divider()
-            
-            Text("Summary")
-
+            NavigationLink(destination: HomeView(), isActive: $navigateToNext) {
+                AnswerButton(title: "Go To Home") {
+                    navigateToNext = true
+                }
+            }
         }
         .onAppear {
-            testResultViewModel.subscribeToQuestionVM(viewModel: viewModel)
+            testResultViewModel.getUserAnswer(viewModel: viewModel)
         }
     }
     
