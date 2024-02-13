@@ -14,18 +14,19 @@ enum ResponseType {
 }
 
 class QuestionViewModel: ObservableObject {
-    var userInfo: UserInfo
-    
     @Published var progress: Double = 0.0
     @Published var currentSocialTestItem: SocialTestItem?
     @Published var currentBehaviorTestItem: BehaviorTestItem?
-
+    
+    @Published var socialTestResults: [SocialTestItem] = []
+    @Published var behaviorTestResults: [BehaviorTestItem] = []
+    
     private var socialQuestions: [String]
     private var behaviorQuestions: [String]
-
+    
     private var currentSocialQuestionIndex = 0
     private var currentBehaviorQuestionIndex = 0
-
+    
     var hasAnsweredAllSocialQuestions: Bool {
         currentSocialQuestionIndex >= socialQuestions.count
     }
@@ -34,8 +35,6 @@ class QuestionViewModel: ObservableObject {
     }
     
     init() {
-        
-        userInfo = UserInfo()
         
         // 사회성 테스트와 행동 테스트를 위한 질문 목록 초기화
         socialQuestions = [
@@ -57,7 +56,7 @@ class QuestionViewModel: ObservableObject {
             "7. Does your child show an unusual response to certain sounds, textures, smells, or visual stimuli (e.g., indifference to pain/temperature, aversion to specific sounds or textures)?",
             "8. Does your child show an unusual interest in observing or touching objects, or a fascination with lights or moving objects?"
         ]
-
+        
         // 첫 번째 질문으로 초기화
         nextSocialQuestion()
         nextBehaviorQuestion()
@@ -67,7 +66,7 @@ class QuestionViewModel: ObservableObject {
     func nextSocialQuestion() {
         if currentSocialQuestionIndex < socialQuestions.count {
             let question = socialQuestions[currentSocialQuestionIndex]
-            currentSocialTestItem = SocialTestItem(num: currentSocialQuestionIndex + 1, description: question)
+            currentSocialTestItem = SocialTestItem(num: currentSocialQuestionIndex + 1, description: question, yesCount: 0, noCount: 0)
             currentSocialQuestionIndex += 1
         }
     }
@@ -76,7 +75,7 @@ class QuestionViewModel: ObservableObject {
     func nextBehaviorQuestion() {
         if currentBehaviorQuestionIndex < behaviorQuestions.count {
             let question = behaviorQuestions[currentBehaviorQuestionIndex]
-            currentBehaviorTestItem = BehaviorTestItem(num: currentBehaviorQuestionIndex + 1, description: question)
+            currentBehaviorTestItem = BehaviorTestItem(num: currentBehaviorQuestionIndex + 1, description: question, yesCount: 0, noCount: 0)
             currentBehaviorQuestionIndex += 1
         }
     }
@@ -87,8 +86,8 @@ class QuestionViewModel: ObservableObject {
         let answeredQuestions = currentSocialQuestionIndex + currentBehaviorQuestionIndex
         progress = Double(answeredQuestions) / Double(totalQuestions)
     }
-
-    // MARK: - 소셜파트 yes or no 카운트 후 UserInfo로 결과값 전송
+    
+    // MARK: - 소셜파트 yes or no 카운트
     func userRespondedToSocialTest(response: ResponseType) {
         guard var testItem = currentSocialTestItem else { return }
         switch response {
@@ -99,9 +98,12 @@ class QuestionViewModel: ObservableObject {
         }
         nextSocialQuestion()
         updateProgress()
+        socialTestResults.append(testItem)
+        print(testItem)
+
     }
     
-    // MARK: - 행동파트 yes or no 카운트 후 UserInfo로 결과값 전송
+    // MARK: - 행동파트 yes or no 카운트
     func userRespondedToBehaviorTest(response: ResponseType) {
         guard var testItem = currentBehaviorTestItem else { return }
         switch response {
@@ -112,5 +114,7 @@ class QuestionViewModel: ObservableObject {
         }
         nextBehaviorQuestion()
         updateProgress()
+        behaviorTestResults.append(testItem)
+        print(testItem)
     }
 }

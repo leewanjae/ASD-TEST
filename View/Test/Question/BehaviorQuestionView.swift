@@ -10,7 +10,6 @@ import SwiftUI
 struct BehaviorQuestionView: View {
     @EnvironmentObject var userInfo: UserInfo
     @ObservedObject var viewModel: QuestionViewModel
-    //    @State private var showAlter = false
     @State private var navigateToNext = false
     
     var body: some View {
@@ -34,12 +33,12 @@ struct BehaviorQuestionView: View {
                     .padding(.bottom, 50)
                 
                 Spacer()
-
+                
                 if let socialTestItem = viewModel.currentBehaviorTestItem {
                     Text(socialTestItem.description)
                         .font(.system(size: 30, weight: .light))
                         .padding(.horizontal, 50)
-
+                    
                     Spacer()
                     
                     HStack {
@@ -52,21 +51,25 @@ struct BehaviorQuestionView: View {
                             viewModel.userRespondedToBehaviorTest(response: .no)
                         }
                         Spacer()
-
+                        
                     }
                 }
                 
                 Spacer()
                 
-                NavigationLink(destination: TestResultView(), isActive: $navigateToNext) {
+                NavigationLink(destination: TestResultView(viewModel: viewModel), isActive: $navigateToNext) {
                     ProgressButton(title: "Submit", progressAction: {
-                        navigateToNext = true
+                        if viewModel.hasAnsweredAllBehaviorQuestions {
+                            navigateToNext = true
+                        }
                     }, disabled: viewModel.hasAnsweredAllBehaviorQuestions)
                 }
             }
         }
     }
 }
+
 #Preview {
-    BehaviorChartView()
+    BehaviorQuestionView(viewModel: QuestionViewModel())
+        .environmentObject(UserInfo())
 }

@@ -9,10 +9,11 @@ import SwiftUI
 
 struct SocialQuestionView: View {
     @EnvironmentObject var userInfo: UserInfo
+    @ObservedObject var viewModel: QuestionViewModel
+    
     @State var progress = 0.1
     @State private var showAlter = false
     @State private var navigateToNext = false
-    @StateObject private var viewModel = QuestionViewModel()
     
     var body: some View {
         NavigationStack {
@@ -69,6 +70,7 @@ struct SocialQuestionView: View {
     }
 }
 
-#Preview{
-    SocialQuestionView()
+#Preview {
+    SocialQuestionView(viewModel: QuestionViewModel())
+        .environmentObject(UserInfo())
 }

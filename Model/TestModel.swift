@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct TestItem<T> {
+struct TestItem<T>: Hashable {
     var num: Int
     var description: String
-    var yesCount: Int = 0
-    var noCount: Int = 0
+    var yesCount: Int
+    var noCount: Int
 }
 
 enum SocialType {}
@@ -21,7 +21,6 @@ typealias SocialTestItem = TestItem<SocialType>
 typealias BehaviorTestItem = TestItem<BehaviorType>
 
 struct TestResult {
-    var socialScore: Int
-    var behaviorScore: Int
-    var testDate: Date = Date()
+    var description: String
+    var result: String
 }
