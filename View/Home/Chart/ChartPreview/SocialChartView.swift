@@ -9,30 +9,40 @@ import SwiftUI
 import Charts
 
 struct SocialChartView: View {
-    @EnvironmentObject var userInfo: UserInfo
+    @EnvironmentObject var questionViewModel: QuestionViewModel
+    let xName = [
+        "Emotion Sharing",
+        "Emotion Sharing",
+        "Conversation Interaction",
+        "Conversation Interaction",
+        "Nonverbal Communication",
+        "Nonverbal Communication",
+        "Social Interaction & Building",
+        "Social Interaction & Building"
+    ]
     
     var body: some View {
+        
         Chart {
-            ForEach(userInfo.socialTestResults.indices, id: \.self) { index in
-                let testItem = userInfo.socialTestResults[index]
-                let postingName = "Question \(testItem.num)"
+            ForEach(questionViewModel.socialTestResults.indices, id: \.self) { index in
+                let testItem = questionViewModel.socialTestResults[index]
+                let categoryName = xName[index % xName.count]
                 let postingCount = testItem.yesCount
-                
+
+                // 실제 값에 대한 막대
                 BarMark(
-                    x: .value("Question", postingName),
+                    x: .value("Category", categoryName),
                     y: .value("Yes Count", postingCount)
                 )
-                .foregroundStyle(by: .value("Question", postingName))
+                .foregroundStyle(by: .value("Category", categoryName))
             }
         }
         .padding()
         .chartForegroundStyleScale([
-            "Question 1": .green,
-            "Question 2": .blue,
-            "Question 3": .red,
-            "Question 4": .orange,
-            "Question 5": .purple,
-            "Question 6": .yellow
+            "Emotion Sharing": .red,
+            "Conversation Interaction": .orange,
+            "Nonverbal Communication": .yellow,
+            "Social Interaction & Building": .green
         ])
         .background(.regularMaterial)
         .border(.secondary, width: 2)
@@ -40,4 +50,5 @@ struct SocialChartView: View {
 }
 #Preview {
     SocialChartView()
+        .environmentObject(QuestionViewModel())
 }

@@ -41,11 +41,11 @@ class TestResultViewModel: ObservableObject {
         let totalSocialQuestionCount = socialTestResults.reduce(0) { $0 + $1.description.count}
         
         // There are 6 social questions
-        if socialYesCount >= 5 {
+        if socialYesCount >= 6 {
             socialResult = "Severity Level 3"
-        } else if socialYesCount >= 3 {
+        } else if socialYesCount >= 4 {
             socialResult = "Severity Level 2"
-        } else if socialYesCount >= 1 {
+        } else if socialYesCount >= 2 {
             socialResult = "Severity Level 1"
         } else {
             socialResult = "Low severity or no signs of autism spectrum disorder"
@@ -64,11 +64,11 @@ class TestResultViewModel: ObservableObject {
         
         // Compare and combine the severity of the two results
         if socialResult.contains("Severity Level 3") || behaviorResult.contains("Severity Level 3") {
-            return "Combined Severity Level: 3 \n\nSocial: \(socialResult) \n\nBehavior: \(behaviorResult) "
+            return "Immediate professional diagnosis is imperative \n\nCombined Severity Level: 3 \nSocial: \(socialResult) \nBehavior: \(behaviorResult)"
         } else if socialResult.contains("Severity Level 2") || behaviorResult.contains("Severity Level 2") {
-            return "Combined Severity Level: 2 \n\nSocial: \(socialResult) \n\nBehavior: \(behaviorResult)"
+            return "A professional consultation is strongly recommended \n\nCombined Severity Level: 2 \nSocial: \(socialResult) \nBehavior: \(behaviorResult)"
         } else if socialResult.contains("Severity Level 1") || behaviorResult.contains("Severity Level 1") {
-            return "Combined Severity Level: 1 \n\nSocial: \(socialResult) \n\nBehavior: \(behaviorResult)"
+            return "It's advisable to seek a professional evaluation \n\nCombined Severity Level: 1 \n\nSocial: \(socialResult) \nBehavior: \(behaviorResult)"
         } else {
             return "Low severity or no signs of autism spectrum disorder \nSocial: \(socialResult), \nBehavior: \(behaviorResult)."
         }

@@ -8,54 +8,75 @@
 import SwiftUI
 
 struct TestResultView: View {
-    @ObservedObject var viewModel: QuestionViewModel
+    @EnvironmentObject var questionViewModel: QuestionViewModel
     @StateObject private var testResultViewModel = TestResultViewModel()
     @State var navigateToNext = false
     var body: some View {
-        VStack{
-            ChartView()
-            
-            Divider()
-            
-            Text("Summary")
-            Text(testResultViewModel.summaryResult())
-                .font(.system(size: 25))
-                .bold()
-            
-            Divider()
-            Text("Social Test Results")
-                .font(.headline)
-                .padding(.top)
-            
-            Text("The items you responded 'yes' to: \(testResultViewModel.socialTestResults.count)")
-            ForEach(testResultViewModel.socialTestResults, id: \.self) { result in
-                Text("\(result.description)")
-            }
-            
-            Divider()
-            
-            Text("Behavior Test Results ")
-                .font(.headline)
-                .padding(.top)
-            
-            Text("The items you responded 'yes' to: \(testResultViewModel.behaviorTestResults.count)")
-            ForEach(testResultViewModel.behaviorTestResults, id: \.self) { result in
-                Text("\(result.description)")
-            }
-            
-            NavigationLink(destination: HomeView(), isActive: $navigateToNext) {
-                AnswerButton(title: "Go To Home") {
-                    navigateToNext = true
+        ScrollView {
+            VStack {
+                ChartView()
+                    .frame(height: 600)
+
+                Divider()
+                
+                Text("Summary")
+                    .font(.title3)
+                    .padding(.vertical, 30)
+
+                Text(testResultViewModel.summaryResult())
+                    .padding(.bottom, 30)
+                
+                Spacer()
+                   
+                Divider()
+                
+                Text("The items you responded 'yes' to: \(testResultViewModel.socialTestResults.count)")
+                    .font(.title3)
+                    .padding(.vertical, 50)
+                
+                ForEach(testResultViewModel.socialTestResults, id: \.self) { result in
+                    HStack {
+                        Text("\(result.description)")
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 50)
+                            .padding(.bottom, 30)
+                        Spacer()
+                    }
+                }
+                
+                Divider()
+                
+                Text("The items you responded 'yes' to: \(testResultViewModel.behaviorTestResults.count)")
+                    .font(.title3)
+                    .padding(.vertical, 50)
+
+                ForEach(testResultViewModel.behaviorTestResults, id: \.self) { result in
+                    HStack {
+                        Text("\(result.description)")
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 50)
+                            .padding(.bottom, 30)
+                        Spacer()
+                    }
+                }
+               
+                
+                Spacer()
+                
+                NavigationLink(destination: HomeView(), isActive: $navigateToNext) {
+                    AnswerButton(title: "Go To Home") {
+                        navigateToNext = true
+                    }
                 }
             }
-        }
-        .onAppear {
-            testResultViewModel.getUserAnswer(viewModel: viewModel)
+            .onAppear {
+                testResultViewModel.getUserAnswer(viewModel: questionViewModel)
+            }
         }
     }
-    
 }
 
 #Preview {
-    TestResultView(viewModel: QuestionViewModel())
+    TestResultView()
+        .environmentObject(QuestionViewModel())
 }

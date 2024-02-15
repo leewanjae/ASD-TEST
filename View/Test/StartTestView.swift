@@ -11,6 +11,7 @@ import Combine
 struct StartTestView: View {
     @EnvironmentObject var userInfo: UserInfo
     @State private var keyboardHeight: CGFloat = 0
+    @EnvironmentObject var questionViewModel: QuestionViewModel
     
     var body: some View {
         ScrollView {
@@ -56,7 +57,7 @@ struct StartTestView: View {
                         
                         // MARK: - 버튼
                         NavigationStack {
-                        NavigationLink(destination: SocialQuestionView(viewModel: QuestionViewModel())) {
+                        NavigationLink(destination: SocialQuestionView()) {
                             DefaultButton(title: "Start")
                         }
                     }
@@ -85,4 +86,5 @@ struct StartTestView: View {
 #Preview {
     StartTestView()
         .environmentObject(UserInfo())
+        .environmentObject(QuestionViewModel())
 }

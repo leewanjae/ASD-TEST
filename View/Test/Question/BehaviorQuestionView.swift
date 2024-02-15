@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BehaviorQuestionView: View {
     @EnvironmentObject var userInfo: UserInfo
-    @ObservedObject var viewModel: QuestionViewModel
+    @EnvironmentObject var questionViewModel: QuestionViewModel
     @State private var navigateToNext = false
     
     var body: some View {
@@ -22,7 +22,7 @@ struct BehaviorQuestionView: View {
                 }
                 .padding(.vertical, 30)
                 
-                ProgressView(value: viewModel.progress, total: 1.0)
+                ProgressView(value: questionViewModel.progress, total: 1.0)
                     .progressViewStyle(.linear)
                     .frame(height: 20)
                     .padding(.bottom, 50)
@@ -34,21 +34,25 @@ struct BehaviorQuestionView: View {
                 
                 Spacer()
                 
-                if let socialTestItem = viewModel.currentBehaviorTestItem {
-                    Text(socialTestItem.description)
-                        .font(.system(size: 30, weight: .light))
-                        .padding(.horizontal, 50)
+                if let socialTestItem = questionViewModel.currentBehaviorTestItem {
+                    HStack {
+                        Text(socialTestItem.description)
+                            .font(.system(size: 30, weight: .light))
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading) // 변경된 부분
+                            .padding(.horizontal, 50)
+                        Spacer() // 오른쪽 정렬을 위한 Spacer 추가
+                    }
                     
                     Spacer()
                     
                     HStack {
                         Spacer()
                         AnswerButton(title: "Yes") {
-                            viewModel.userRespondedToBehaviorTest(response: .yes)
+                            questionViewModel.userRespondedToBehaviorTest(response: .yes)
                         }
                         
                         AnswerButton(title: "No") {
-                            viewModel.userRespondedToBehaviorTest(response: .no)
+                            questionViewModel.userRespondedToBehaviorTest(response: .no)
                         }
                         Spacer()
                         
@@ -57,12 +61,12 @@ struct BehaviorQuestionView: View {
                 
                 Spacer()
                 
-                NavigationLink(destination: TestResultView(viewModel: viewModel), isActive: $navigateToNext) {
+                NavigationLink(destination: TestResultView(), isActive: $navigateToNext) {
                     ProgressButton(title: "Submit", progressAction: {
-                        if viewModel.hasAnsweredAllBehaviorQuestions {
+                        if questionViewModel.hasAnsweredAllBehaviorQuestions {
                             navigateToNext = true
                         }
-                    }, disabled: viewModel.hasAnsweredAllBehaviorQuestions)
+                    }, disabled: questionViewModel.hasAnsweredAllBehaviorQuestions)
                 }
             }
         }
@@ -70,6 +74,7 @@ struct BehaviorQuestionView: View {
 }
 
 #Preview {
-    BehaviorQuestionView(viewModel: QuestionViewModel())
+    BehaviorQuestionView()
         .environmentObject(UserInfo())
+        .environmentObject(QuestionViewModel())
 }

@@ -10,18 +10,14 @@ import SwiftUI
 // MARK: - ViewBuilder
 struct SceneViewBuilder {
     @ViewBuilder
-    static func destinationView(scene: SceneType, questionViewModel: QuestionViewModel? = nil) -> some View {
+    static func destinationView(scene: SceneType) -> some View {
         switch scene {
         case .StartTest:
             StartTestView()
         case .AutismSpectrumTraits:
             AutismSpectrumTraitsView()
         case .TestResult:
-            if let viewModel = questionViewModel {
-                TestResultView(viewModel: viewModel)
-            } else {
-                Text("Error: QuestionViewModel is required for TestResultView")
-            }
+                TestResultView()
         case .AppSettings:
             AppSettingsView()
         }
