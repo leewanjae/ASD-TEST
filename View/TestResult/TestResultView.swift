@@ -11,6 +11,8 @@ struct TestResultView: View {
     @EnvironmentObject var questionViewModel: QuestionViewModel
     @StateObject private var testResultViewModel = TestResultViewModel()
     @State var navigateToNext = false
+    @State var showingModal = false
+
     var body: some View {
         ScrollView {
             VStack {
@@ -19,9 +21,20 @@ struct TestResultView: View {
 
                 Divider()
                 
-                Text("Summary")
-                    .font(.title3)
-                    .padding(.vertical, 30)
+                HStack {
+                    Text("Summary")
+                        .font(.title3)
+                        .padding(.vertical, 30)
+                    
+                    Button("Help with Severity") {
+                        showingModal = true
+                    }
+                    .fullScreenCover(isPresented: $showingModal, content: {
+                        SeverityView(showingModal: $showingModal)
+                    })
+                    .buttonStyle(.bordered)
+                    .foregroundColor(.primary)
+                }
 
                 Text(testResultViewModel.summaryResult())
                     .padding(.bottom, 30)
