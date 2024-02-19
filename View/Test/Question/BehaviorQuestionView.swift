@@ -61,7 +61,9 @@ struct BehaviorQuestionView: View {
                 
                 Spacer()
                 
-                NavigationLink(destination: TestResultView(), isActive: $navigateToNext) {
+                NavigationLink(destination: TestResultView().onAppear(perform: {
+                    questionViewModel.saveResultsToUserDefaults()
+                }), isActive: $navigateToNext) {
                     ProgressButton(title: "Submit", progressAction: {
                         if questionViewModel.hasAnsweredAllBehaviorQuestions {
                             navigateToNext = true

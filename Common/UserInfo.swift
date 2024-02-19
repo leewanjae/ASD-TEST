@@ -32,6 +32,10 @@ class UserInfo: ObservableObject {
     func addBehaviorTestResult(_ result: BehaviorTestItem) {
         behaviorTestResults.append(result)
         print(behaviorTestResults.map({ $0.yesCount }))
-
+    }
+    
+    func reset() {
+        self.name = ""
+        self.birthDate = Date()
     }
 }

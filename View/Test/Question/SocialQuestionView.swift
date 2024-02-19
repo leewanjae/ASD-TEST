@@ -12,7 +12,6 @@ struct SocialQuestionView: View {
     @EnvironmentObject var questionViewModel: QuestionViewModel
     
     @State var progress = 0.1
-    @State private var showAlter = false
     @State private var navigateToNext = false
     
     var body: some View {
@@ -59,6 +58,9 @@ struct SocialQuestionView: View {
                         }
                         Spacer()
                     }
+                    .alert(isPresented: $questionViewModel.showAlert, content: {
+                        Alert(title: Text("Success"), message: Text("All answers have been completed. Please press the Next button."), dismissButton: .default(Text("OK")))
+                    })
                     Spacer()
                 }
                 
@@ -77,4 +79,5 @@ struct SocialQuestionView: View {
 #Preview {
     SocialQuestionView()
         .environmentObject(UserInfo())
+        .environmentObject(QuestionViewModel())
 }

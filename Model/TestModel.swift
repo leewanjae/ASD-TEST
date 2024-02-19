@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TestItem<T>: Hashable {
+struct TestItem<T>: Hashable, Codable {
     var num: Int
     var description: String
     var yesCount: Int
@@ -20,7 +20,7 @@ enum BehaviorType {}
 typealias SocialTestItem = TestItem<SocialType>
 typealias BehaviorTestItem = TestItem<BehaviorType>
 
-struct TestResult {
+struct TestResult: Codable {
     var description: String
     var result: String
 }

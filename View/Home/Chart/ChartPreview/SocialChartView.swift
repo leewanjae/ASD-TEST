@@ -9,7 +9,8 @@ import SwiftUI
 import Charts
 
 struct SocialChartView: View {
-    @EnvironmentObject var questionViewModel: QuestionViewModel
+    @StateObject var viewModel = ChartPreviewViewModel()
+    
     let xName = [
         "Emotion Sharing",
         "Emotion Sharing",
@@ -22,14 +23,12 @@ struct SocialChartView: View {
     ]
     
     var body: some View {
-        
         Chart {
-            ForEach(questionViewModel.socialTestResults.indices, id: \.self) { index in
-                let testItem = questionViewModel.socialTestResults[index]
+            ForEach(viewModel.socialTestResults.indices, id: \.self) { index in
+                let testItem = viewModel.socialTestResults[index]
                 let categoryName = xName[index % xName.count]
                 let postingCount = testItem.yesCount
-
-                // 실제 값에 대한 막대
+                
                 BarMark(
                     x: .value("Category", categoryName),
                     y: .value("Yes Count", postingCount)
@@ -39,16 +38,19 @@ struct SocialChartView: View {
         }
         .padding()
         .chartForegroundStyleScale([
-            "Emotion Sharing": .red,
-            "Conversation Interaction": .orange,
-            "Nonverbal Communication": .yellow,
-            "Social Interaction & Building": .green
+            "Emotion Sharing": Color.chartBar1,
+            "Conversation Interaction": Color.chartBar2,
+            "Nonverbal Communication": Color.chartBar3,
+            "Social Interaction & Building": Color.chartBar4
         ])
         .background(.regularMaterial)
         .border(.secondary, width: 2)
+        .onAppear {
+            viewModel.loadSocialTestResultsFromUserDefaults()
+        }
     }
 }
+
 #Preview {
     SocialChartView()
-        .environmentObject(QuestionViewModel())
 }

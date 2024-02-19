@@ -14,6 +14,7 @@ enum ResponseType {
 }
 
 class QuestionViewModel: ObservableObject {
+    @Published var showAlert = false
     @Published var progress: Double = 0.0
     @Published var currentSocialTestItem: SocialTestItem?
     @Published var currentBehaviorTestItem: BehaviorTestItem?
@@ -69,6 +70,8 @@ class QuestionViewModel: ObservableObject {
         if currentSocialQuestionIndex < socialQuestions.count {
             let question = socialQuestions[currentSocialQuestionIndex]
             currentSocialTestItem = SocialTestItem(num: currentSocialQuestionIndex + 1, description: question, yesCount: 0, noCount: 0)
+        } else {
+            
         }
     }
     
@@ -89,38 +92,75 @@ class QuestionViewModel: ObservableObject {
     
     // MARK: - 소셜파트 yes or no 카운트
     func userRespondedToSocialTest(response: ResponseType) {
-        guard var testItem = currentSocialTestItem else { return }
-        switch response {
-        case .yes:
-            testItem.yesCount += 1
-        case .no:
-            testItem.noCount += 1
-        }
-        if currentSocialQuestionIndex < socialQuestions.count {
-            currentSocialQuestionIndex += 1
-            nextSocialQuestion()
-        }
-        updateProgress()
-        socialTestResults.append(testItem)
         
+        if hasAnsweredAllSocialQuestions {
+            showAlert = true
+        } else {
+            guard var testItem = currentSocialTestItem, currentSocialQuestionIndex < socialQuestions.count else { return }
+            switch response {
+            case .yes:
+                testItem.yesCount += 1
+            case .no:
+                testItem.noCount += 1
+            }
+            if currentSocialQuestionIndex < socialQuestions.count {
+                currentSocialQuestionIndex += 1
+                nextSocialQuestion()
+            }
+            updateProgress()
+            socialTestResults.append(testItem)
+        }
     }
     
     // MARK: - 행동파트 yes or no 카운트
     func userRespondedToBehaviorTest(response: ResponseType) {
-        guard var testItem = currentBehaviorTestItem else { return }
-        switch response {
-        case .yes:
-            testItem.yesCount += 1
-        case .no:
-            testItem.noCount += 1
-        }
         
-        if currentBehaviorQuestionIndex < behaviorQuestions.count {
-            currentBehaviorQuestionIndex += 1
-            nextBehaviorQuestion()
+        if hasAnsweredAllBehaviorQuestions {
+            showAlert = true
+        } else {
+            guard var testItem = currentBehaviorTestItem, currentBehaviorQuestionIndex < behaviorQuestions.count else { return }
+            switch response {
+            case .yes:
+                testItem.yesCount += 1
+            case .no:
+                testItem.noCount += 1
+            }
+            
+            if currentBehaviorQuestionIndex < behaviorQuestions.count {
+                currentBehaviorQuestionIndex += 1
+                nextBehaviorQuestion()
+            }
+            
+            updateProgress()
+            behaviorTestResults.append(testItem)
         }
+    }
+    
+    func clearTestData() {
+        currentSocialQuestionIndex = 0
+        currentBehaviorQuestionIndex = 0
+        progress = 0.0
+        currentSocialTestItem = nil
+        currentBehaviorTestItem = nil
+        nextSocialQuestion()
+        nextBehaviorQuestion()
+    }
+    
+    func saveResultsToUserDefaults() {
+        UserDefaults.standard
         
-        updateProgress()
-        behaviorTestResults.append(testItem)
+        if let encodedSocialResults = try? JSONEncoder().encode(socialTestResults),
+           let encodedBehaviorResults = try? JSONEncoder().encode(behaviorTestResults) {
+            UserDefaults.standard.set(encodedSocialResults, forKey: "socialTestResults")
+            UserDefaults.standard.set(encodedBehaviorResults, forKey: "behaviorTestResults")
+        }
+    }
+    
+    func userDefaultsReset() {
+        if let emptySocialResults = try? JSONEncoder().encode([SocialTestItem]()),
+           let emptyBehaviorResults = try? JSONEncoder().encode([BehaviorTestItem]()) {
+            UserDefaults.standard.set(emptySocialResults, forKey: "socialTestResults")
+            UserDefaults.standard.set(emptyBehaviorResults, forKey: "behaviorTestResults")
+        }
     }
 }

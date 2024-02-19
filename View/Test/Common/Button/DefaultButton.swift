@@ -9,12 +9,10 @@ import SwiftUI
 
 struct DefaultButton: View {
     var title: String
-    
-    init(title: String = "Next") {
-        self.title = title
-    }
+    var action: () -> Void
     
     var body: some View {
+        Button(action: action){
             Text(title)
                 .frame(width: 200, height: 50)
                 .padding()
@@ -22,9 +20,10 @@ struct DefaultButton: View {
                 .foregroundColor(.white)
                 .clipShape(.capsule)
                 .shadow(radius: 5)
+        }
     }
 }
 
 #Preview {
-    DefaultButton(title: "")
+    DefaultButton(title: "", action: {})
 }

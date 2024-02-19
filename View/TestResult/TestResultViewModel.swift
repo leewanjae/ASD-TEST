@@ -73,4 +73,12 @@ class TestResultViewModel: ObservableObject {
             return "Low severity or no signs of autism spectrum disorder \nSocial: \(socialResult), \nBehavior: \(behaviorResult)."
         }
     }
+    
+    func loadResultsFromUserDefaults() {
+        if let savedSocialResults = UserDefaults.standard.data(forKey: "socialTestResults"),
+           let savedBehaviorResults = UserDefaults.standard.data(forKey: "behaviorTestResults") {
+            socialTestResults = (try? JSONDecoder().decode([SocialTestItem].self, from: savedSocialResults)) ?? []
+            behaviorTestResults = (try? JSONDecoder().decode([BehaviorTestItem].self, from: savedBehaviorResults)) ?? []
+        }
+    }
 }

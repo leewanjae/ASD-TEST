@@ -9,8 +9,8 @@ import SwiftUI
 import Charts
 
 struct BehaviorChartView: View {
-    @EnvironmentObject var questionViewModel: QuestionViewModel
-    
+    @StateObject var viewModel = ChartPreviewViewModel()
+
     var body: some View {
         let xName = [
             "Repetitive Behavior Patterns",
@@ -24,8 +24,8 @@ struct BehaviorChartView: View {
         ]
         
         Chart {
-            ForEach(questionViewModel.behaviorTestResults.indices, id: \.self) { index in
-                let testItem = questionViewModel.behaviorTestResults[index]
+            ForEach(viewModel.behaviorTestResults.indices, id: \.self) { index in
+                let testItem = viewModel.behaviorTestResults[index]
                 let categoryName = xName[index % xName.count]
                 let postingCount = testItem.yesCount
 
@@ -39,17 +39,19 @@ struct BehaviorChartView: View {
         }
         .padding()
         .chartForegroundStyleScale([
-            "Repetitive Behavior Patterns": .red,
-            "Overreaction to Routine Changes": .orange,
-            "Specific Obsessions": .yellow,
-            "Unusual Sensory Responses": .green,
+            "Repetitive Behavior Patterns": Color.chartBar1,
+            "Overreaction to Routine Changes": Color.chartBar2,
+            "Specific Obsessions": Color.chartBar3,
+            "Unusual Sensory Responses": Color.chartBar4,
         ])
         .background(.regularMaterial)
         .border(.secondary, width: 2)
+        .onAppear {
+            viewModel.loadBehaviorTestResultsFromUserDefaults()
+        }
     }
 }
 
 #Preview {
     BehaviorChartView()
-        .environmentObject(QuestionViewModel())
 }
