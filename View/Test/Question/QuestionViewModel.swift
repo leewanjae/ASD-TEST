@@ -92,7 +92,6 @@ class QuestionViewModel: ObservableObject {
     
     // MARK: - 소셜파트 yes or no 카운트
     func userRespondedToSocialTest(response: ResponseType) {
-        
         if hasAnsweredAllSocialQuestions {
             showAlert = true
         } else {
@@ -108,13 +107,19 @@ class QuestionViewModel: ObservableObject {
                 nextSocialQuestion()
             }
             updateProgress()
+
+            // 배열의 크기가 이미 문제 갯수와 같은 경우, 가장 오래된 결과를 제거
+            if socialTestResults.count >= socialQuestions.count {
+                socialTestResults.removeFirst()
+            }
+
+            // 수정된 testItem을 배열에 추가
             socialTestResults.append(testItem)
         }
     }
     
     // MARK: - 행동파트 yes or no 카운트
     func userRespondedToBehaviorTest(response: ResponseType) {
-        
         if hasAnsweredAllBehaviorQuestions {
             showAlert = true
         } else {
@@ -132,6 +137,13 @@ class QuestionViewModel: ObservableObject {
             }
             
             updateProgress()
+
+            // 배열의 크기가 이미 문제 개수와 같은 경우, 가장 오래된 결과를 제거
+            if behaviorTestResults.count >= behaviorQuestions.count {
+                behaviorTestResults.removeFirst()
+            }
+
+            // 수정된 testItem을 배열에 추가
             behaviorTestResults.append(testItem)
         }
     }
@@ -147,12 +159,19 @@ class QuestionViewModel: ObservableObject {
     }
     
     func saveResultsToUserDefaults() {
-        if let encodedSocialResults = try? JSONEncoder().encode(socialTestResults),
-           let encodedBehaviorResults = try? JSONEncoder().encode(behaviorTestResults) {
+        // 사회성 테스트 결과 저장
+        let socialCount = min(socialTestResults.count, socialQuestions.count)
+        if let encodedSocialResults = try? JSONEncoder().encode(Array(socialTestResults.suffix(socialCount))) {
             UserDefaults.standard.set(encodedSocialResults, forKey: "socialTestResults")
+        }
+
+        // 행동 테스트 결과 저장
+        let behaviorCount = min(behaviorTestResults.count, behaviorQuestions.count)
+        if let encodedBehaviorResults = try? JSONEncoder().encode(Array(behaviorTestResults.suffix(behaviorCount))) {
             UserDefaults.standard.set(encodedBehaviorResults, forKey: "behaviorTestResults")
         }
     }
+
     
     func userDefaultsReset() {
         if let emptySocialResults = try? JSONEncoder().encode([SocialTestItem]()),

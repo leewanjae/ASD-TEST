@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SeverityView: View {
-    @Binding var showingModal: Bool
     let level1Social = """
     Without supports in place, deficits in social communication cause noticeable impairments.
     
@@ -49,7 +48,7 @@ struct SeverityView: View {
     
     
     var body: some View {
-        ScrollView {
+        VStack {
             // MARK: - 심각도 1
             Divider()
                 .background(Color.main)
@@ -131,12 +130,8 @@ struct SeverityView: View {
                 .padding(30)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
-        Button("Close") {
-            self.showingModal = false
-        }
-        .buttonStyle(.borderedProminent)
     }
 }
 #Preview {
-    SeverityView(showingModal: .constant(true))
+    SeverityView()
 }

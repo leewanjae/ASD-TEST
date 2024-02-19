@@ -11,7 +11,6 @@ struct TestResultView: View {
     @EnvironmentObject var questionViewModel: QuestionViewModel
     @StateObject private var testResultViewModel = TestResultViewModel()
     @State var navigateToNext = false
-    @State var showingModal = false
 
     var body: some View {
         ScrollView {
@@ -20,69 +19,25 @@ struct TestResultView: View {
                     .frame(height: 600)
 
                 Divider()
-                
-                HStack {
+                    .background(Color.main)
+                    .padding()
+              
                     Text("Summary")
-                        .font(.title3)
-                        .padding(.vertical, 30)
-                    
-                    
-                }
-
+                        .font(.largeTitle)
+                        .bold()
+                
+                Divider()
+                    .background(Color.main)
+                    .padding()
+                
+                Spacer()
+                
                 Text(testResultViewModel.summaryResult())
-                    .padding(.bottom, 30)
+                    .padding(.vertical, 30)
+                    .font(.headline)
                 
-                Button(action: {
-                    showingModal = true
-                }) {
-                    Text("What is the severity criteria?")
-                        .underline()
-                        .italic()
-                        .foregroundColor(Color.main)
+                    SeverityView()
 
-                }
-                .fullScreenCover(isPresented: $showingModal, content: {
-                    SeverityView(showingModal: $showingModal)
-                })
-                .buttonStyle(.borderless)
-
-                Spacer()
-                   
-                Divider()
-                
-                Text("The items you responded 'yes' to: \(testResultViewModel.socialTestResults.count)")
-                    .font(.title3)
-                    .padding(.vertical, 50)
-                
-                ForEach(testResultViewModel.socialTestResults, id: \.self) { result in
-                    HStack {
-                        Text("\(result.description)")
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 50)
-                            .padding(.bottom, 30)
-                        Spacer()
-                    }
-                }
-                
-                Divider()
-                
-                Text("The items you responded 'yes' to: \(testResultViewModel.behaviorTestResults.count)")
-                    .font(.title3)
-                    .padding(.vertical, 50)
-
-                ForEach(testResultViewModel.behaviorTestResults, id: \.self) { result in
-                    HStack {
-                        Text("\(result.description)")
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 50)
-                            .padding(.bottom, 30)
-                        Spacer()
-                    }
-                }
-               
-                
-                Spacer()
-                
                 NavigationLink(destination: HomeView(), isActive: $navigateToNext) {
                     AnswerButton(title: "Go To Home") {
                         navigateToNext = true
