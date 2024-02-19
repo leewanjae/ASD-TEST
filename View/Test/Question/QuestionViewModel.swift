@@ -147,8 +147,6 @@ class QuestionViewModel: ObservableObject {
     }
     
     func saveResultsToUserDefaults() {
-        UserDefaults.standard
-        
         if let encodedSocialResults = try? JSONEncoder().encode(socialTestResults),
            let encodedBehaviorResults = try? JSONEncoder().encode(behaviorTestResults) {
             UserDefaults.standard.set(encodedSocialResults, forKey: "socialTestResults")
