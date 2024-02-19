@@ -74,11 +74,20 @@ class TestResultViewModel: ObservableObject {
         }
     }
     
+    func saveSummaryResultToUserDefaults() {
+        let summary = summaryResult()
+        UserDefaults.standard.set(summary, forKey: "TestResultSummary")
+    }
+    
     func loadResultsFromUserDefaults() {
         if let savedSocialResults = UserDefaults.standard.data(forKey: "socialTestResults"),
            let savedBehaviorResults = UserDefaults.standard.data(forKey: "behaviorTestResults") {
             socialTestResults = (try? JSONDecoder().decode([SocialTestItem].self, from: savedSocialResults)) ?? []
             behaviorTestResults = (try? JSONDecoder().decode([BehaviorTestItem].self, from: savedBehaviorResults)) ?? []
         }
+    }
+    
+    func loadSummaryResultFromUserDefaults() -> String {
+        return UserDefaults.standard.string(forKey: "TestResultSummary") ?? "결과가 없습니다"
     }
 }

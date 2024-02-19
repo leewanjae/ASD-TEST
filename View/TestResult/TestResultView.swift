@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TestResultView: View {
     @EnvironmentObject var questionViewModel: QuestionViewModel
-    @StateObject private var testResultViewModel = TestResultViewModel()
+    @EnvironmentObject var testResultViewModel: TestResultViewModel
     @State var navigateToNext = false
 
     var body: some View {
@@ -32,7 +32,7 @@ struct TestResultView: View {
                 
                 Spacer()
                 
-                Text(testResultViewModel.summaryResult())
+                Text(UserDefaults.standard.string(forKey: "TestResultSummary") ?? "")
                     .padding(.vertical, 30)
                     .font(.headline)
                 
@@ -45,7 +45,6 @@ struct TestResultView: View {
                 }
             }
             .onAppear {
-                testResultViewModel.loadResultsFromUserDefaults()
                 testResultViewModel.getUserAnswer(viewModel: questionViewModel)
             }
         }
@@ -55,4 +54,5 @@ struct TestResultView: View {
 #Preview {
     TestResultView()
         .environmentObject(QuestionViewModel())
+        .environmentObject(TestResultViewModel()) // Preview를 위해 추가
 }

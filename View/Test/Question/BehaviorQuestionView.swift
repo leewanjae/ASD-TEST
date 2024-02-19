@@ -11,6 +11,7 @@ struct BehaviorQuestionView: View {
     @EnvironmentObject var userInfo: UserInfo
     @EnvironmentObject var questionViewModel: QuestionViewModel
     @State private var navigateToNext = false
+    @EnvironmentObject var testResultViewModel: TestResultViewModel
     
     var body: some View {
         NavigationStack {
@@ -61,12 +62,14 @@ struct BehaviorQuestionView: View {
                 
                 Spacer()
                 
-                NavigationLink(destination: TestResultView().onAppear(perform: {
+                NavigationLink(destination: TestResultView().environmentObject(testResultViewModel).onAppear(perform: {
                     questionViewModel.saveResultsToUserDefaults()
+                    testResultViewModel.saveSummaryResultToUserDefaults()
                 }), isActive: $navigateToNext) {
                     ProgressButton(title: "Submit", progressAction: {
                         if questionViewModel.hasAnsweredAllBehaviorQuestions {
                             navigateToNext = true
+
                         }
                     }, disabled: questionViewModel.hasAnsweredAllBehaviorQuestions)
                 }
@@ -79,4 +82,5 @@ struct BehaviorQuestionView: View {
     BehaviorQuestionView()
         .environmentObject(UserInfo())
         .environmentObject(QuestionViewModel())
+        .environmentObject(TestResultViewModel())
 }
