@@ -17,13 +17,14 @@ struct HomeView: View {
     ]
     
     var body: some View {
-        VStack {
+        ScrollView {
             
             Image("logo")
                 .resizable()
                 .frame(width: 200, height: 200)
                
             ChartView()
+                .frame(height: 600)
                 .padding()
                 .border(.secondary, width: 2)
                 .background(Color.chartBg)
