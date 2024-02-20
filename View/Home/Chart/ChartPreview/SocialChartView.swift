@@ -36,6 +36,7 @@ struct SocialChartView: View {
                 .foregroundStyle(by: .value("Category", categoryName))
             }
         }
+        .chartYScale(domain: 0...2)
         .padding()
         .chartForegroundStyleScale([
             "Emotion Sharing": Color.chartBar1,

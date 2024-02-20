@@ -37,6 +37,7 @@ struct BehaviorChartView: View {
                 .foregroundStyle(by: .value("Category", categoryName))
             }
         }
+        .chartYScale(domain: 0...2)
         .padding()
         .chartForegroundStyleScale([
             "Repetitive Behavior Patterns": Color.chartBar1,
