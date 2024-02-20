@@ -14,8 +14,8 @@ struct SceneViewBuilder {
         switch scene {
         case .StartTest:
             StartTestView()
-        case .AutismSpectrumTraits:
-            AutismSpectrumTraitsView()
+        case .ASDTraits:
+            ASDTraits()
         case .TestResult:
                 TestResultView()
         case .AppSettings:
