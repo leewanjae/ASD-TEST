@@ -18,8 +18,8 @@ struct SceneViewBuilder {
             ASDTraits()
         case .TestResult:
                 TestResultView()
-        case .AppSettings:
-            AppSettingsView()
+        case .Education:
+            Education()
         }
     }
 }
