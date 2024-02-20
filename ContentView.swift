@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var isActive = false // 화면 전환을 위한 상태 변수
+    @State private var navigateToNext = false // 화면 전환을 위한 상태 변수
     
     var body: some View {
         NavigationStack {
@@ -10,12 +10,12 @@ struct ContentView: View {
                     .resizable()
                     .frame(width: 150, height: 150)
             }
-            .navigationDestination(isPresented: $isActive) {
+            .navigationDestination(isPresented: $navigateToNext) {
                 HomeView()
             }
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    self.isActive = true
+                    self.navigateToNext = true
                 }
             }
         }

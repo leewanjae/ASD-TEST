@@ -9,10 +9,10 @@ import SwiftUI
 
 struct SocialQuestionView: View {
     @EnvironmentObject var userInfo: UserInfo
+    @EnvironmentObject var questionViewModel: QuestionViewModel
+    
     @State var progress = 0.1
-    @State private var showAlter = false
     @State private var navigateToNext = false
-    @StateObject private var viewModel = QuestionViewModel()
     
     var body: some View {
         NavigationStack {
@@ -24,7 +24,7 @@ struct SocialQuestionView: View {
                 }
                 .padding(.vertical, 30)
                 
-                ProgressView(value: viewModel.progress, total: 1.0)
+                ProgressView(value: questionViewModel.progress, total: 1.0)
                     .progressViewStyle(.linear)
                     .frame(height: 20)
                     .padding(.bottom, 50)
@@ -35,40 +35,49 @@ struct SocialQuestionView: View {
                     .padding(.bottom, 50)
                 
                 Spacer()
-
-                if let socialTestItem = viewModel.currentSocialTestItem {
-                    Text(socialTestItem.description)
-                        .font(.system(size: 30, weight: .light))
-                        .padding(.horizontal, 50)
+                
+                if let socialTestItem = questionViewModel.currentSocialTestItem {
+                    HStack {
+                        Text(socialTestItem.description)
+                            .font(.system(size: 30, weight: .light))
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading) // 변경된 부분
+                            .padding(.horizontal, 50)
+                        Spacer() // 오른쪽 정렬을 위한 Spacer 추가
+                    }
                     
                     Spacer()
                     
                     HStack {
                         Spacer()
                         AnswerButton(title: "Yes") {
-                            viewModel.userRespondedToSocialTest(response: .yes)
+                            questionViewModel.userRespondedToSocialTest(response: .yes)
                         }
                         
                         AnswerButton(title: "No") {
-                            viewModel.userRespondedToSocialTest(response: .no)
+                            questionViewModel.userRespondedToSocialTest(response: .no)
                         }
                         Spacer()
                     }
+                    .alert(isPresented: $questionViewModel.showAlert, content: {
+                        Alert(title: Text("Success"), message: Text("All answers have been completed. Please press the Next button."), dismissButton: .default(Text("OK")))
+                    })
                     Spacer()
                 }
                 
-                NavigationLink(destination: BehaviorQuestionView(viewModel: viewModel), isActive: $navigateToNext) {
+                NavigationLink(destination: BehaviorQuestionView(), isActive: $navigateToNext) {
                     ProgressButton(title: "Next Categori", progressAction: {
-                        if viewModel.hasAnsweredAllSocialQuestions {
+                        if questionViewModel.hasAnsweredAllSocialQuestions {
                             navigateToNext = true
                         }
-                    }, disabled: viewModel.hasAnsweredAllSocialQuestions)
+                    }, disabled: questionViewModel.hasAnsweredAllSocialQuestions)
                 }
             }
         }
     }
 }
 
-#Preview{
+#Preview {
     SocialQuestionView()
+        .environmentObject(UserInfo())
+        .environmentObject(QuestionViewModel())
 }

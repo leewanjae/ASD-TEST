@@ -17,13 +17,14 @@ struct HomeView: View {
     ]
     
     var body: some View {
-        VStack {
+        ScrollView {
             
             Image("logo")
                 .resizable()
                 .frame(width: 200, height: 200)
                
             ChartView()
+                .frame(height: 600)
                 .padding()
                 .border(.secondary, width: 2)
                 .background(Color.chartBg)
@@ -52,7 +53,9 @@ struct HomeView: View {
         .toolbar(.hidden)
         
         // MARK: - 온보딩 시트
-        .sheet(isPresented: $showModal, content: {
+        .sheet(isPresented: $showModal, onDismiss: {
+            UserDefaults.standard.set(true, forKey: "HasCompletedOnboarding")
+        }) {
             TabView {
                 OnBoardingDescriptionView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -60,16 +63,18 @@ struct HomeView: View {
                 OnBoardingEndView(showModal: $showModal)
             }
             .tabViewStyle(.page)
-        })
+        }
         .onAppear {
-            if !hasShownModal {
-                showModal = true
-                hasShownModal = true
-            }
+            let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "HasCompletedOnboarding")
+              if !hasCompletedOnboarding && !hasShownModal {
+                  showModal = true
+                  hasShownModal = true
+              }
         }
     }
 }
 
 #Preview {
     HomeView()
+        .environmentObject(UserInfo())
 }

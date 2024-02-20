@@ -10,25 +10,27 @@ import Combine
 
 struct StartTestView: View {
     @EnvironmentObject var userInfo: UserInfo
+    @EnvironmentObject var questionViewModel: QuestionViewModel
+    @State private var navigateToNext = false
     
     var body: some View {
-        NavigationStack {
-            VStack() {
-                Spacer()
+        ScrollView {
+            VStack {
                 Image("logo")
                     .resizable()
                     .frame(width: 200, height: 200)
                     .padding(.bottom, 30)
                 // MARK: - 유저 정보 입력
-                VStack(alignment: .leading) {
-                    Text("Full Name ")
+                VStack {
+                    Text("Full Name")
                         .font(.system(size: 25))
-                    TextField("Enter your full name, please", text: $userInfo.name)
+                        .padding(.bottom, 10)
+                    TextField("Enter", text: $userInfo.name)
+                        .textFieldStyle(.automatic)
                         .border(.black)
                         .frame(width: 400)
-                        .textFieldStyle(.roundedBorder)
-                        .keyboardType(.default)
-                        .padding(.bottom, 30)
+                    
+                    Spacer()
                     
                     HStack {
                         DatePicker("", selection: $userInfo.birthDate, in: ...Date(), displayedComponents: .date)
@@ -52,18 +54,26 @@ struct StartTestView: View {
                         .padding(.bottom, 50)
                     
                     // MARK: - 버튼
-                    
-                    NavigationLink(destination: SocialQuestionView()) {
-                        DefaultButton(title: "Start")
+                    NavigationLink(destination: SocialQuestionView().onAppear(perform: {
+                        questionViewModel.userDefaultsReset()
+                        questionViewModel.clearTestData()
+                    }), isActive: $navigateToNext) {
+                        DefaultButton(title: "Start", action: {
+                            navigateToNext = true
+                        })
                     }
                 }
-                Spacer()
             }
             .background(Color.white)
+        }
+        .onAppear {
+            userInfo.reset()
         }
     }
 }
 
 #Preview {
     StartTestView()
+        .environmentObject(UserInfo())
+        .environmentObject(QuestionViewModel())
 }

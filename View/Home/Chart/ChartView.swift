@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ChartView: View {
     @State private var selectedTab = 0
+    @EnvironmentObject var questionViewModel: QuestionViewModel
     
     var body: some View {
         VStack {
@@ -37,4 +38,9 @@ struct ChartView: View {
             Spacer()
         }
     }
+}
+
+#Preview {
+    ChartView()
+        .environmentObject(QuestionViewModel())
 }

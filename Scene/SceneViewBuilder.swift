@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - ViewBuiler
+// MARK: - ViewBuilder
 struct SceneViewBuilder {
     @ViewBuilder
     static func destinationView(scene: SceneType) -> some View {
@@ -17,7 +17,7 @@ struct SceneViewBuilder {
         case .AutismSpectrumTraits:
             AutismSpectrumTraitsView()
         case .TestResult:
-            TestResultView()
+                TestResultView()
         case .AppSettings:
             AppSettingsView()
         }
