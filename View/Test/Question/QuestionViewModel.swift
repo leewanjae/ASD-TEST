@@ -181,6 +181,6 @@ class QuestionViewModel: ObservableObject {
         }
         
         UserDefaults.standard.set("Low severity or no signs of autism spectrum disorder", forKey: "TestResultSummary")
-        UserDefaults.standard.set("The user's name is missing", forKey: "userName")
+        UserDefaults.standard.set(" ", forKey: "userName")
     }
 }

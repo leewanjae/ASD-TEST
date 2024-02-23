@@ -68,7 +68,7 @@ class TestResultViewModel: ObservableObject {
         } else if socialResult.contains("Severity Level 2") || behaviorResult.contains("Severity Level 2") {
             return "A professional consultation is strongly recommended \n\n\nCombined Severity Level: 2 \n\nSocial: \(socialResult) \n\nBehavior: \(behaviorResult)"
         } else if socialResult.contains("Severity Level 1") || behaviorResult.contains("Severity Level 1") {
-            return "It's advisable to seek a professional evaluation \n\n\nCombined Severity Level: 1 \n\n\nSocial: \(socialResult) \n\nBehavior: \(behaviorResult)"
+            return "Close observation of the subject is required. \nIf symptoms worsen, you should seek professional advice. \n\n\nCombined Severity Level: 1 \n\n\nSocial: \(socialResult) \n\nBehavior: \(behaviorResult)"
         } else {
             return "Low severity or no signs of autism spectrum disorder"
         }
@@ -88,6 +88,6 @@ class TestResultViewModel: ObservableObject {
     }
     
     func loadSummaryResultFromUserDefaults() -> String {
-        return UserDefaults.standard.string(forKey: "TestResultSummary") ?? "결과가 없습니다"
+        return UserDefaults.standard.string(forKey: "TestResultSummary") ?? "Empty Results"
     }
 }

@@ -10,7 +10,8 @@ import SwiftUI
 // MARK: - sheet 첫번째 페이지
 struct OnBoardingDescriptionView: View {
     @State private var animate = false
-    
+    @Binding var showModal: Bool
+
     var body: some View {
         ZStack {
             GeometryReader { geometry in
@@ -18,22 +19,19 @@ struct OnBoardingDescriptionView: View {
                     .resizable()
                     .frame(width: geometry.size.width, height: geometry.size.height)
             }
-            VStack {
-                Spacer()
-                
-                HStack {
-                    Spacer()
-                    
-                    Image(systemName: "arrow.right")
-                        .foregroundColor(.gray)
-                        .padding(.leading, 5)
-                        .offset(x: animate ? 0 : -20)
-                        .animation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true), value: animate)
-                        .onAppear {
-                            animate = true
-                        }
-                }
+            
+            Button {
+                showModal = false
+            } label: {
+                Text("Start")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundStyle(.black)
             }
+            .buttonStyle(.bordered)
         }
     }
+}
+
+#Preview {
+    OnBoardingDescriptionView(showModal: .constant(true))
 }

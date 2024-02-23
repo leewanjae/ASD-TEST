@@ -35,18 +35,20 @@ struct TestResultView: View {
                 
                 Spacer()
                 
+                VStack(alignment: .leading) { // VStack에 .leading 정렬 적용
+                    Text("Name: \(UserDefaults.standard.string(forKey: "userName") ?? "Name: ")")
+                        .font(.system(size: 30, weight: .semibold))
+                    
+                    Text("Age: \(userInfo.age)")
+                        .font(.system(size: 30, weight: .semibold))
+                        .padding(.top, 10)
+                }
+                .padding() // VStack에 패딩 적용
+                .frame(maxWidth: .infinity, alignment: .center) // 프레임의 정렬을 .leading으로 설정
+                
                 Text(UserDefaults.standard.string(forKey: "TestResultSummary") ?? "")
                     .padding(.vertical, 30)
-                    .font(.system(size: 30, weight: .semibold))
-                
-                HStack {
-                    if ((UserDefaults.standard.string(forKey: "userName")?.isEmpty) == nil) {
-                        Text("Name: The user's name is missing")
-                    } else {
-                        Text("Name: \(UserDefaults.standard.string(forKey: "userName") ?? "Name")")
-                    }
-                    Text("Age: \(userInfo.age)")
-                }
+                    .font(.system(size: 25, weight: .medium))
                 
                     SeverityView()
 
