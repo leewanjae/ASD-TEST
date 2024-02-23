@@ -9,10 +9,11 @@ import SwiftUI
 
 struct ChartView: View {
     @State private var selectedTab = 0
+    @EnvironmentObject var questionViewModel: QuestionViewModel
     
     var body: some View {
         VStack {
-            Text("Test Results Summary Chart")
+            Text("Test Results")
                 .font(.largeTitle)
                 .bold()
             // MARK: - 세그먼티드 컨트롤
@@ -37,4 +38,9 @@ struct ChartView: View {
             Spacer()
         }
     }
+}
+
+#Preview {
+    ChartView()
+        .environmentObject(QuestionViewModel())
 }

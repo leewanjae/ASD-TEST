@@ -9,16 +9,46 @@ import SwiftUI
 import Charts
 
 struct SocialChartView: View {
+    @StateObject var viewModel = ChartPreviewViewModel()
+    
+    let xName = [
+        "Emotion Sharing",
+        "Emotion Sharing",
+        "Conversation Interaction",
+        "Conversation Interaction",
+        "Nonverbal Communication",
+        "Nonverbal Communication",
+        "Social Interaction & Building",
+        "Social Interaction & Building"
+    ]
+    
     var body: some View {
         Chart {
-            ForEach(postings) { posting in
-                BarMark(x: .value("Posting", posting.count), y: .value("Name", posting.name))
+            ForEach(viewModel.socialTestResults.indices, id: \.self) { index in
+                let testItem = viewModel.socialTestResults[index]
+                let categoryName = xName[index % xName.count]
+                let postingCount = testItem.yesCount
+                
+                BarMark(
+                    x: .value("Category", categoryName),
+                    y: .value("Yes Count", postingCount)
+                )
+                .foregroundStyle(by: .value("Category", categoryName))
             }
         }
+        .chartYScale(domain: 0...2)
         .padding()
-        .foregroundColor(.main)
+        .chartForegroundStyleScale([
+            "Emotion Sharing": Color.chartBar1,
+            "Conversation Interaction": Color.chartBar2,
+            "Nonverbal Communication": Color.chartBar3,
+            "Social Interaction & Building": Color.chartBar4
+        ])
         .background(.regularMaterial)
         .border(.secondary, width: 2)
+        .onAppear {
+            viewModel.loadSocialTestResultsFromUserDefaults()
+        }
     }
 }
 

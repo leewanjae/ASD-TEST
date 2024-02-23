@@ -10,9 +10,9 @@ import SwiftUI
 enum SceneType: String, CaseIterable ,Identifiable {
     
     case StartTest = "Start Test"
-    case AutismSpectrumTraits = "Autism Spectrum Traits"
+    case ASDTraits = "ASD Traits"
     case TestResult = "Test Result"
-    case AppSettings = "App Settings"
+    case Education = "Education"
     
     var id: String { self.rawValue }
 }

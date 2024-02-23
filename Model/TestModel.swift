@@ -7,6 +7,20 @@
 
 import Foundation
 
-struct TestModel {
-    
+struct TestItem<T>: Hashable, Codable {
+    var num: Int
+    var description: String
+    var yesCount: Int
+    var noCount: Int
+}
+
+enum SocialType {}
+enum BehaviorType {}
+
+typealias SocialTestItem = TestItem<SocialType>
+typealias BehaviorTestItem = TestItem<BehaviorType>
+
+struct TestResult: Codable {
+    var description: String
+    var result: String
 }
