@@ -12,9 +12,9 @@ struct Education: View {
     
     var body: some View {
         ScrollView {
-            Text("Education")
-                .font(.largeTitle)
-                .bold()
+            Image("logo")
+                .resizable()
+                .frame(width: 100, height: 100)
             
             CreateContextView()
             DTTView()

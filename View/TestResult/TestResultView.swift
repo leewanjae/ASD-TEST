@@ -10,7 +10,10 @@ import SwiftUI
 struct TestResultView: View {
     @EnvironmentObject var questionViewModel: QuestionViewModel
     @EnvironmentObject var testResultViewModel: TestResultViewModel
+    @EnvironmentObject var userInfo: UserInfo
+    
     @State var navigateToNext = false
+    var navigationHidden: Bool = false
 
     var body: some View {
         ScrollView {
@@ -34,7 +37,16 @@ struct TestResultView: View {
                 
                 Text(UserDefaults.standard.string(forKey: "TestResultSummary") ?? "")
                     .padding(.vertical, 30)
-                    .font(.headline)
+                    .font(.system(size: 30, weight: .semibold))
+                
+                HStack {
+                    if ((UserDefaults.standard.string(forKey: "userName")?.isEmpty) == nil) {
+                        Text("Name: The user's name is missing")
+                    } else {
+                        Text("Name: \(UserDefaults.standard.string(forKey: "userName") ?? "Name")")
+                    }
+                    Text("Age: \(userInfo.age)")
+                }
                 
                     SeverityView()
 
@@ -43,6 +55,7 @@ struct TestResultView: View {
                         navigateToNext = true
                     }
                 }
+                .navigationBarBackButtonHidden(navigationHidden)
             }
             .onAppear {
                 testResultViewModel.getUserAnswer(viewModel: questionViewModel)
@@ -55,4 +68,5 @@ struct TestResultView: View {
     TestResultView()
         .environmentObject(QuestionViewModel())
         .environmentObject(TestResultViewModel()) // Preview를 위해 추가
+        .environmentObject(UserInfo())
 }
