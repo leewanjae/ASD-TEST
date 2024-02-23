@@ -74,6 +74,16 @@ struct BehaviorQuestionView: View {
                     }, disabled: questionViewModel.hasAnsweredAllBehaviorQuestions)
                 }
                 .navigationBarBackButtonHidden()
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        NavigationLink(destination: HomeView().onAppear(perform: {
+                            userInfo.reset()
+                        })) {
+                           Text("Home")
+                                .foregroundColor(Color.main)
+                        }
+                    }
+                }
             }
         }
     }

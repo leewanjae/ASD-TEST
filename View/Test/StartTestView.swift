@@ -24,26 +24,24 @@ struct StartTestView: View {
                 VStack {
                     Text("Full Name")
                         .font(.system(size: 25))
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 30)
                     TextField("Enter", text: $userInfo.name)
-                        .textFieldStyle(.automatic)
+                        .padding()
                         .border(.black)
-                        .frame(width: 400)
+                        .frame(width: 500)
+                        .padding(.bottom, 30)
                     
                     Spacer()
                     
-                    HStack {
-                        DatePicker("", selection: $userInfo.birthDate, in: ...Date(), displayedComponents: .date)
-                            .datePickerStyle(.graphical)
-                            .frame(width: 300)
-                            .multilineTextAlignment(.center)
-                            .font(.system(size: 25))
-                            .padding(.bottom, 30)
-                            .padding(.trailing, 30)
-                        
-                        Text("Age: \(userInfo.age)")
-                            .font(.system(size: 25))
-                    }
+                    Text("Age: \(userInfo.age)")
+                        .font(.system(size: 25))
+                        .padding(.bottom, 10)
+
+                    DatePicker("", selection: $userInfo.birthDate, in: ...Date(), displayedComponents: .date)
+                        .datePickerStyle(.graphical)
+                        .frame(width: 500, height: 400)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom, 30)
                 }
                 
                 VStack{

@@ -57,10 +57,9 @@ struct HomeView: View {
             UserDefaults.standard.set(true, forKey: "HasCompletedOnboarding")
         }) {
             TabView {
-                OnBoardingDescriptionView()
+                OnBoardingDescriptionView(showModal: $showModal)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding(.bottom, 50)
-                OnBoardingEndView(showModal: $showModal)
             }
             .tabViewStyle(.page)
         }
