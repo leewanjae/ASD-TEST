@@ -63,13 +63,23 @@ struct SocialQuestionView: View {
                     })
                     Spacer()
                 }
-                
                 NavigationLink(destination: BehaviorQuestionView(), isActive: $navigateToNext) {
                     ProgressButton(title: "Next Categori", progressAction: {
                         if questionViewModel.hasAnsweredAllSocialQuestions {
                             navigateToNext = true
                         }
                     }, disabled: questionViewModel.hasAnsweredAllSocialQuestions)
+                }
+                .navigationBarBackButtonHidden()
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        NavigationLink(destination: HomeView().onAppear(perform: {
+                            userInfo.reset()
+                        })) {
+                           Text("Home")
+                                .foregroundColor(Color.main)
+                        }
+                    }
                 }
             }
         }

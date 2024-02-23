@@ -62,7 +62,7 @@ struct BehaviorQuestionView: View {
                 
                 Spacer()
                 
-                NavigationLink(destination: TestResultView().environmentObject(testResultViewModel).onAppear(perform: {
+                NavigationLink(destination: TestResultView(navigationHidden: true).environmentObject(testResultViewModel).onAppear(perform: {
                     questionViewModel.saveResultsToUserDefaults()
                     testResultViewModel.saveSummaryResultToUserDefaults()
                 }), isActive: $navigateToNext) {
@@ -73,6 +73,7 @@ struct BehaviorQuestionView: View {
                         }
                     }, disabled: questionViewModel.hasAnsweredAllBehaviorQuestions)
                 }
+                .navigationBarBackButtonHidden()
             }
         }
     }

@@ -13,7 +13,7 @@ struct ChartView: View {
     
     var body: some View {
         VStack {
-            Text("Test Results Summary Chart")
+            Text("Test Results")
                 .font(.largeTitle)
                 .bold()
             // MARK: - 세그먼티드 컨트롤

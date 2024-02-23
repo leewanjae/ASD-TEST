@@ -55,8 +55,7 @@ struct StartTestView: View {
                     
                     // MARK: - 버튼
                     NavigationLink(destination: SocialQuestionView().onAppear(perform: {
-                        questionViewModel.userDefaultsReset()
-                        questionViewModel.clearTestData()
+                        
                     }), isActive: $navigateToNext) {
                         DefaultButton(title: "Start", action: {
                             navigateToNext = true
@@ -68,6 +67,8 @@ struct StartTestView: View {
         }
         .onAppear {
             userInfo.reset()
+            questionViewModel.userDefaultsReset()
+            questionViewModel.clearTestData()
         }
     }
 }
